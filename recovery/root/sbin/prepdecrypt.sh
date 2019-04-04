@@ -14,7 +14,7 @@ finish()
 	umount /s
 	rmdir /v
 	rmdir /s
-	setprop fde.ready 1
+	setprop crypto.ready 1
 	exit 0
 }
 
@@ -23,21 +23,21 @@ if [ -z "$suffix" ]; then
 	suf=$(getprop ro.boot.slot)
 	suffix="_$suf"
 fi
-#venpath="/dev/block/bootdevice/by-name/vendor$suffix"
-#mkdir /v
-#mount -t ext4 -o ro "$venpath" /v
+venpath="/dev/block/bootdevice/by-name/vendor$suffix"
+mkdir /v
+mount -t ext4 -o ro "$venpath" /v
 syspath="/dev/block/bootdevice/by-name/system$suffix"
 mkdir /s
 mount -t ext4 -o ro "$syspath" /s
 
-#is_fastboot_twrp=$(getprop ro.boot.fastboot)
-#if [ ! -z "$is_fastboot_twrp" ]; then
-	#osver=$(getprop ro.build.version.release_orig)
-	#patchlevel=$(getprop ro.build.version.security_patch_orig)
-	#setprop ro.build.version.release "$osver"
-	#setprop ro.build.version.security_patch "$patchlevel"
-	#finish
-#fi
+is_fastboot_twrp=$(getprop ro.boot.fastboot)
+if [ ! -z "$is_fastboot_twrp" ]; then
+	osver=$(getprop ro.build.version.release_orig)
+	patchlevel=$(getprop ro.build.version.security_patch_orig)
+	setprop ro.build.version.release "$osver"
+	setprop ro.build.version.security_patch "$patchlevel"
+	finish
+fi
 
 if [ -f /s/system/build.prop ]; then
 	# TODO: It may be better to try to read these from the boot image than from /system
@@ -54,13 +54,14 @@ else
 	setprop ro.build.version.security_patch "$patchlevel"
 	finish
 fi
-finish
 
+###### NOTE: The below is no longer used but I'm keeping it here in case it is needed again at some point!
 mkdir -p /vendor/lib64/hw/
 
 cp /s/system/lib64/android.hidl.base@1.0.so /sbin/
 cp /s/system/lib64/libicuuc.so /sbin/
 cp /s/system/lib64/libxml2.so /sbin/
+cp /s/system/lib64/libkeymaster_messages.so /sbin/
 
 relink /v/bin/qseecomd
 
@@ -75,19 +76,16 @@ cp /v/lib64/libqservice.so /vendor/lib64/
 cp /v/lib64/libQSEEComAPI.so /vendor/lib64/
 cp /v/lib64/librecovery_updater_msm.so /vendor/lib64/
 cp /v/lib64/librpmb.so /vendor/lib64/
-cp /v/lib64/libsecureui.so /vendor/lib64/
 cp /v/lib64/libSecureUILib.so /vendor/lib64/
-cp /v/lib64/libsecureui_svcsock.so /vendor/lib64/
-cp /v/lib64/libspcom.so /vendor/lib64/
-cp /v/lib64/libspl.so /vendor/lib64/
 cp /v/lib64/libssd.so /vendor/lib64/
-cp /v/lib64/libStDrvInt.so /vendor/lib64/
 cp /v/lib64/libtime_genoff.so /vendor/lib64/
 cp /v/lib64/libkeymasterdeviceutils.so /vendor/lib64/
 cp /v/lib64/libkeymasterprovision.so /vendor/lib64/
 cp /v/lib64/libkeymasterutils.so /vendor/lib64/
-cp /v/lib64/vendor.qti.hardware.tui_comm@1.0_vendor.so /vendor/lib64/
+cp /v/lib64/libqtikeymaster4.so /vendor/lib64/
 cp /v/lib64/hw/bootctrl.msm8953.so /vendor/lib64/hw/
+cp /v/lib64/hw/gatekeeper.msm8953.so /vendor/lib64/hw/
+cp /v/lib64/hw/keystore.msm8953.so /vendor/lib64/hw/
 cp /v/lib64/hw/android.hardware.boot@1.0-impl.so /vendor/lib64/hw/
 cp /v/lib64/hw/android.hardware.gatekeeper@1.0-impl-qti.so /vendor/lib64/hw/
 cp /v/lib64/hw/android.hardware.keymaster@3.0-impl-qti.so /vendor/lib64/hw/
