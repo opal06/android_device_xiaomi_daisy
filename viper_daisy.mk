@@ -42,3 +42,7 @@ PRODUCT_BUILD_PROP_OVERRIDES += \
 BUILD_FINGERPRINT := "xiaomi/daisy/daisy_sprout:9/PKQ1.180917.001/V10.0.1.0.PDLMIFJ:user/release-keys"
 
 TARGET_VENDOR := Xiaomi
+
+# Its Official ViperOS
+
+VIPER_BUILD_TYPE := OFFICIAL
