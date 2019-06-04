@@ -73,14 +73,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     init.target.rc
 
-# Display
-PRODUCT_PACKAGES += \
-    vendor.display.config@1.0
-
-# Doze
-PRODUCT_PACKAGES += \
-    XiaomiDoze
-
 # FM
 PRODUCT_PACKAGES += \
     FM2 \
