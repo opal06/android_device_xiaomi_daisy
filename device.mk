@@ -39,6 +39,15 @@ AB_OTA_PARTITIONS += \
     boot \
     system
 
+AB_OTA_POSTINSTALL_CONFIG += \
+    RUN_POSTINSTALL_system=true \
+    POSTINSTALL_PATH_system=system/bin/otapreopt_script \
+    FILESYSTEM_TYPE_system=ext4 \
+    POSTINSTALL_OPTIONAL_system=true
+
+PRODUCT_PACKAGES += \
+    otapreopt_script
+
 # AID/fs configs
 PRODUCT_PACKAGES += \
     fs_config_files
@@ -49,7 +58,12 @@ PRODUCT_PACKAGES += \
     android.hardware.audio.common@4.0 \
     android.hardware.audio.common@4.0-util \
     android.hardware.audio.effect@4.0 \
-    libaudio-resampler
+    libaudio-resampler \
+    tinymix
+
+# Boot control
+PRODUCT_PACKAGES_DEBUG += \
+    bootctl
 
 # Camera
 PRODUCT_PACKAGES += \
@@ -58,6 +72,14 @@ PRODUCT_PACKAGES += \
 # Device init scripts
 PRODUCT_PACKAGES += \
     init.target.rc
+
+# Display
+PRODUCT_PACKAGES += \
+    vendor.display.config@1.0
+
+# Doze
+PRODUCT_PACKAGES += \
+    XiaomiDoze
 
 # FM
 PRODUCT_PACKAGES += \
@@ -81,12 +103,17 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/idc/uinput-goodix.idc:system/usr/idc/uinput-goodix.idc
 
 PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/keylayout/msm8953-snd-card-mtp_Button_Jack.kl:system/usr/keylayout/msm8953-snd-card-mtp_Button_Jack.kl \
     $(LOCAL_PATH)/keylayout/uinput-fpc.kl:system/usr/keylayout/uinput-fpc.kl \
     $(LOCAL_PATH)/keylayout/uinput-goodix.kl:system/usr/keylayout/uinput-goodix.kl
 
 # LiveDisplay HAL
 PRODUCT_PACKAGES += \
     lineage.livedisplay@2.0-service-sdm
+
+# Power
+PRODUCT_PACKAGES += \
+    power.qcom
 
 # QCOM
 PRODUCT_COPY_FILES += \
@@ -100,6 +127,21 @@ PRODUCT_BOOT_JARS += \
 # Trust HAL
 PRODUCT_PACKAGES += \
     lineage.trust@1.0-service
+
+# Update engine
+PRODUCT_PACKAGES += \
+    brillo_update_payload \
+    update_engine \
+    update_verifier
+
+PRODUCT_STATIC_BOOT_CONTROL_HAL := \
+    bootctrl.msm8953 \
+    libcutils \
+    libgptutils \
+    libz
+
+PRODUCT_PACKAGES_DEBUG += \
+    update_engine_client
 
 # USB
 PRODUCT_PACKAGES += \
