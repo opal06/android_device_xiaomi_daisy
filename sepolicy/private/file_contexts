@@ -22,3 +22,4 @@
 
 # Media Profile
 /system/etc/media_profiles_V1_0.xml    u:object_r:vendor_configs_file:s0
+
