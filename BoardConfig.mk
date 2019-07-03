@@ -97,6 +97,7 @@ endif
 
 # Display
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
+TARGET_ADDITIONAL_GRALLOC_10_USAGE_BITS := (1 << 21)
 TARGET_USES_HWC2 := true
 
 # DRM
@@ -133,6 +134,9 @@ TARGET_USES_MKE2FS := true
 
 TARGET_COPY_OUT_VENDOR := vendor
 
+# Power
+TARGET_TAP_TO_WAKE_NODE := "/proc/touchpanel/wakeup_gesture"
+
 # Recovery
 BOARD_USES_RECOVERY_AS_BOOT := true
 TARGET_NO_RECOVERY := true
@@ -144,7 +148,8 @@ TARGET_PROVIDES_QTI_TELEPHONY_JAR := true
 TARGET_RIL_VARIANT := caf
 
 # SELinux
-include device/qcom/sepolicy/sepolicy.mk
+BOARD_PLAT_PRIVATE_SEPOLICY_DIR += device/qcom/sepolicy/private
+BOARD_PLAT_PUBLIC_SEPOLICY_DIR += device/qcom/sepolicy/public
 
 # Sensors
 USE_SENSOR_MULTI_HAL := true
